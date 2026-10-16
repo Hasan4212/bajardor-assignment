@@ -1,8 +1,7 @@
 "use client";
 
-
-
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 interface Product {
   id: number;
@@ -78,6 +77,7 @@ export default function PriceUpProducts() {
         <h2 className="text-2xl font-extrabold text-gray-900 sm:text-3xl">
           যেসব পণ্যের দাম বেড়েছে
         </h2>
+
         <p className="mt-2 text-sm text-gray-500">
           আজকের বাজারে দাম বৃদ্ধি পাওয়া পণ্যগুলোর তালিকা
         </p>
@@ -85,48 +85,58 @@ export default function PriceUpProducts() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {products.map((product) => (
-          <div
+          <Link
             key={product.id}
-            className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+            href={`/details/${product.id}`}
+            className="block rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+            aria-label={`${product.nameBn} পণ্যের বিস্তারিত দেখুন`}
           >
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-50 text-2xl">
-                  {product.categoryIcon}
+            <div className="h-full rounded-2xl border border-gray-200 bg-white p-5 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-green-300 hover:shadow-lg">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-50 text-2xl">
+                    {product.categoryIcon}
+                  </div>
+
+                  <div>
+                    <h3 className="font-bold text-gray-900">
+                      {product.nameBn}
+                    </h3>
+
+                    <p className="mt-1 text-sm text-gray-500">
+                      {product.categoryNameBn}
+                    </p>
+                  </div>
                 </div>
 
-                <div>
-                  <h3 className="font-bold text-gray-900">
-                    {product.nameBn}
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    {product.categoryNameBn}
-                  </p>
-                </div>
+                <span className="shrink-0 rounded-full bg-red-50 px-3 py-1 text-sm font-semibold text-red-600">
+                  ▲ {product.change?.pct ?? 0}%
+                </span>
               </div>
 
-              <span className="shrink-0 rounded-full bg-red-50 px-3 py-1 text-sm font-semibold text-red-600">
-                ▲ {product.change.pct}%
-              </span>
+              <div className="mt-5 border-t border-gray-100 pt-4">
+                <p className="text-sm text-gray-500">
+                  আজকের দাম
+                </p>
+
+                <p className="mt-1 text-2xl font-extrabold text-gray-900">
+                  ৳{product.today.toLocaleString("bn-BD")}
+                  <span className="ml-1 text-sm font-normal text-gray-500">
+                    / {product.unit}
+                  </span>
+                </p>
+
+                <p className="mt-2 text-sm text-gray-500">
+                  গতকাল: ৳
+                  {product.yesterday.toLocaleString("bn-BD")}
+                </p>
+
+                <p className="mt-4 text-sm font-semibold text-green-700">
+                  বিস্তারিত দেখুন →
+                </p>
+              </div>
             </div>
-
-            <div className="mt-5 border-t border-gray-100 pt-4">
-              <p className="text-sm text-gray-500">
-                আজকের দাম
-              </p>
-
-              <p className="mt-1 text-2xl font-extrabold text-gray-900">
-                ৳{product.today.toLocaleString("bn-BD")}
-                <span className="ml-1 text-sm font-normal text-gray-500">
-                  / {product.unit}
-                </span>
-              </p>
-
-              <p className="mt-2 text-sm text-gray-500">
-                গতকাল: ৳{product.yesterday.toLocaleString("bn-BD")}
-              </p>
-            </div>
-          </div>
+          </Link>
         ))}
       </div>
 
@@ -134,10 +144,7 @@ export default function PriceUpProducts() {
         <p className="py-10 text-center text-gray-500">
           দাম বেড়েছে এমন কোনো পণ্য পাওয়া যায়নি।
         </p>
-      )} 
-
-
-
+      )}
     </section>
   );
 }
