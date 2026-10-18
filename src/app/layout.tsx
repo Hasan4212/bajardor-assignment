@@ -40,3 +40,4 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     </html>
   );
 }
+export const instant = false;
