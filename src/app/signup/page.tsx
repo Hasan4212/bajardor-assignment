@@ -3,7 +3,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState } from "react"; 
+import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 
 export default function SignupPage() {
@@ -61,7 +62,26 @@ export default function SignupPage() {
     } finally {
       setLoading(false);
     }
+  } 
+
+  const handleGoogleSignIn = async () => {
+  try {
+    const { error } = await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/",
+    });
+
+    if (error) {
+      toast.error("Google Login ব্যর্থ হয়েছে!", {
+        description: error.message || "আবার চেষ্টা করুন।",
+      });
+    }
+  } catch {
+    toast.error("সমস্যা হয়েছে!", {
+      description: "Google দিয়ে আবার চেষ্টা করুন।",
+    });
   }
+};
 
   return (
     <main className="min-h-[80vh] bg-[#f0f7f1] px-4 py-12 text-[#17352d]">
@@ -166,6 +186,8 @@ export default function SignupPage() {
             </button>
           </form>
 
+{/* google and github signup  */} 
+
           <div className="my-5 flex items-center gap-4">
             <div className="h-px flex-1 bg-gray-200" />
             <span className="text-sm text-gray-500">অথবা</span>
@@ -173,14 +195,14 @@ export default function SignupPage() {
           </div>
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <button
-              type="button"
-              disabled
-              className="flex items-center justify-center gap-2 rounded-lg border border-[#d6e4e6] px-3 py-3 text-sm font-semibold opacity-60"
-            >
-              <span className="text-lg font-bold text-blue-600">G</span>
-              Google দিয়ে সাইন আপ
-            </button>
+<button
+  onClick={handleGoogleSignIn}
+  type="button"
+  className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#d6e4e6] px-3 py-3 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:border-green-600 hover:bg-green-50 hover:shadow-md active:translate-y-0"
+>
+  <span className="text-lg font-bold text-blue-600">G</span>
+  Google দিয়ে সাইন ইন করুন
+</button>
 
             <button
               type="button"
