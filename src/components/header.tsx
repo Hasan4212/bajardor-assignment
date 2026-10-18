@@ -1,4 +1,5 @@
 
+import Userinfo from './Body/userinfo';
 import Navlinks from './Navlinks';
 
 import Link from "next/link";
@@ -31,7 +32,7 @@ const Header = () => {
     
 <div className="flex gap-3">
   {/* Sign In Button */}
-  <button
+  {/* <button
     className="cursor-pointer rounded-xl border border-gray-200 bg-white px-5 py-2.5
     text-sm font-semibold text-gray-700 shadow-sm
     transition-all duration-300 ease-in-out
@@ -39,25 +40,12 @@ const Header = () => {
     active:scale-95"
   >
     সাইন ইন
-  </button>
+  </button> */}
 
-  {/* Sign Up Button */}
-  <button
-    className="cursor-pointer group relative overflow-hidden rounded-xl
-    bg-gradient-to-r from-green-600 to-emerald-500
-    px-5 py-2.5 text-sm font-semibold text-white
-    shadow-md shadow-green-600/20
-    transition-all duration-300 ease-in-out
-    hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-600/30
-    active:translate-y-0 active:scale-95"
-  >
-    <span className="relative z-10 flex items-center gap-2">
-      সাইন আপ
-      <span className="transition-transform duration-300 group-hover:translate-x-1">
-        →
-      </span>
-    </span>
-  </button>
+  {/* Sign Up Button */} 
+
+<Userinfo/> 
+
 </div>
 
       </div>

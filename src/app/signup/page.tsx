@@ -2,19 +2,26 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { authClient } from "@/lib/auth-client";
 
 export default function SignupPage() {
+  const router = useRouter();
+
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    e: React.FormEvent<HTMLFormElement>
+  ) {
     e.preventDefault();
     setError("");
 
-    if (password.length < 6) {
-      setError("পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।");
+    if (password.length < 8) {
+      setError("পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।");
       return;
     }
 
@@ -23,7 +30,37 @@ export default function SignupPage() {
       return;
     }
 
-    setError("এখন Signup Authentication যুক্ত করতে হবে।");
+    const formData = new FormData(e.currentTarget);
+
+    const name = String(formData.get("name") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+
+    if (!name || !email) {
+      setError("নাম ও ইমেইল পূরণ করুন।");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { error } = await authClient.signUp.email({
+        name,
+        email,
+        password,
+      });
+
+      if (error) {
+        setError(error.message || "সাইন আপ করা যায়নি।");
+        return;
+      }
+
+      router.push("/signin");
+      router.refresh();
+    } catch {
+      setError("সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -46,10 +83,12 @@ export default function SignupPage() {
               </label>
               <input
                 id="name"
+                name="name"
                 type="text"
                 placeholder="আপনার পূর্ণ নাম লিখুন"
                 autoComplete="name"
                 required
+                disabled={loading}
                 className="w-full rounded-lg border border-[#d6e4e6] px-4 py-3 text-sm outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
               />
             </div>
@@ -60,10 +99,12 @@ export default function SignupPage() {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="you@example.com"
                 autoComplete="email"
                 required
+                disabled={loading}
                 className="w-full rounded-lg border border-[#d6e4e6] px-4 py-3 text-sm outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
               />
             </div>
@@ -74,13 +115,16 @@ export default function SignupPage() {
               </label>
               <input
                 id="password"
+                name="password"
                 type="password"
-                placeholder="কমপক্ষে ৬ অক্ষর"
+                placeholder="কমপক্ষে ৮ অক্ষর"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="new-password"
-                minLength={6}
+                minLength={8}
+                maxLength={128}
                 required
+                disabled={loading}
                 className="w-full rounded-lg border border-[#d6e4e6] px-4 py-3 text-sm outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
               />
             </div>
@@ -94,12 +138,14 @@ export default function SignupPage() {
               </label>
               <input
                 id="confirmPassword"
+                name="confirmPassword"
                 type="password"
                 placeholder="আবার পাসওয়ার্ড লিখুন"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 autoComplete="new-password"
                 required
+                disabled={loading}
                 className="w-full rounded-lg border border-[#d6e4e6] px-4 py-3 text-sm outline-none transition focus:border-green-600 focus:ring-2 focus:ring-green-100"
               />
             </div>
@@ -112,9 +158,11 @@ export default function SignupPage() {
 
             <button
               type="submit"
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-green-700 px-4 py-3 font-bold text-white transition hover:bg-green-800"
+              disabled={loading}
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-green-700 px-4 py-3 font-bold text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              সাইন আপ করুন <span>→</span>
+              {loading ? "অ্যাকাউন্ট তৈরি হচ্ছে..." : "সাইন আপ করুন"}
+              {!loading && <span>→</span>}
             </button>
           </form>
 
@@ -127,7 +175,8 @@ export default function SignupPage() {
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <button
               type="button"
-              className="flex items-center justify-center gap-2 rounded-lg border border-[#d6e4e6] px-3 py-3 text-sm font-semibold transition hover:bg-gray-50"
+              disabled
+              className="flex items-center justify-center gap-2 rounded-lg border border-[#d6e4e6] px-3 py-3 text-sm font-semibold opacity-60"
             >
               <span className="text-lg font-bold text-blue-600">G</span>
               Google দিয়ে সাইন আপ
@@ -135,7 +184,8 @@ export default function SignupPage() {
 
             <button
               type="button"
-              className="flex items-center justify-center gap-2 rounded-lg border border-[#d6e4e6] px-3 py-3 text-sm font-semibold transition hover:bg-gray-50"
+              disabled
+              className="flex items-center justify-center gap-2 rounded-lg border border-[#d6e4e6] px-3 py-3 text-sm font-semibold opacity-60"
             >
               <span className="text-lg">●</span>
               GitHub দিয়ে সাইন আপ
@@ -148,7 +198,7 @@ export default function SignupPage() {
               href="/signin"
               className="font-bold text-green-700 hover:text-green-900"
             >
-              সাইন করুন
+              সাইন ইন করুন
             </Link>
           </p>
         </div>
@@ -165,3 +215,5 @@ export default function SignupPage() {
     </main>
   );
 }
+
+

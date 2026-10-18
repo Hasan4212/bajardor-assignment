@@ -1,4 +1,5 @@
 
+
 import Image from "next/image";
 
 
@@ -46,16 +47,14 @@ const Banner = () => {
 
             {/* Button */}
             <div className="mt-6">
-              <button
-                type="button"
-                className="group inline-flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-3 text-sm font-semibold text-white shadow-md shadow-green-600/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-600/30 active:translate-y-0 active:scale-95 sm:w-auto sm:text-base"
-              >
-                সব পণ্য দেখুন
 
-                <span className="text-lg transition-transform duration-300 group-hover:translate-x-1">
-                  →
-                </span>
-              </button>
+  <button
+    type="button"
+    className="group inline-flex w-full cursor-pointer items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-green-600 to-emerald-500 px-6 py-3 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg sm:w-auto sm:text-base"
+  >
+    সকল পণ্য দেখুন →
+  </button>
+
             </div>
 
             {/* Small Info */}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Hind_Siliguri } from "next/font/google";
 import "./globals.css"; 
 
+import { Toaster } from "sonner";
 import Header from '../components/header'; 
 import Marquee from '../components/marque'; 
 import Footer from '../components/Footer';
@@ -30,8 +31,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   <Header></Header> 
   <Marquee></Marquee> 
 
-        {children}
+        {children} 
         
+        <Toaster position="top-right" richColors />
 <Footer></Footer>
 
         </body>
