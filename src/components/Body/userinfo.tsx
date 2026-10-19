@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -19,7 +18,10 @@ const Userinfo = () => {
 
   const user = session?.user;
 
-  function showToast(message: string, type: ToastType = "success") {
+  function showToast(
+    message: string,
+    type: ToastType = "success"
+  ) {
     setToast({ message, type });
     window.setTimeout(() => setToast(null), 3500);
   }
@@ -33,7 +35,10 @@ const Userinfo = () => {
       const { error } = await authClient.signOut();
 
       if (error) {
-        showToast("লগআউট করা যায়নি। আবার চেষ্টা করুন।", "error");
+        showToast(
+          "লগআউট করা যায়নি। আবার চেষ্টা করুন।",
+          "error"
+        );
         return;
       }
 
@@ -99,6 +104,7 @@ const Userinfo = () => {
       <div className="relative">
         {user ? (
           <div className="relative">
+            {/* User Button */}
             <button
               type="button"
               onClick={() => setMenuOpen(!menuOpen)}
@@ -122,7 +128,9 @@ const Userinfo = () => {
                 <p className="max-w-32 truncate text-sm font-bold text-gray-800">
                   {user.name || "ব্যবহারকারী"}
                 </p>
-                <p className="text-xs text-green-600">অ্যাকাউন্ট</p>
+                <p className="text-xs text-green-600">
+                  অ্যাকাউন্ট
+                </p>
               </div>
 
               <svg
@@ -141,6 +149,7 @@ const Userinfo = () => {
               </svg>
             </button>
 
+            {/* Dropdown Menu */}
             {menuOpen && (
               <>
                 <button
@@ -151,6 +160,7 @@ const Userinfo = () => {
                 />
 
                 <div className="absolute right-0 z-50 mt-3 w-64 overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-xl">
+                  {/* User Details */}
                   <div className="border-b border-gray-100 bg-green-50/70 px-4 py-4">
                     <p className="truncate font-bold text-gray-800">
                       {user.name || "ব্যবহারকারী"}
@@ -160,14 +170,24 @@ const Userinfo = () => {
                     </p>
                   </div>
 
+                  {/* Menu Items */}
                   <div className="p-2">
                     <Link
                       href="/"
                       onClick={() => setMenuOpen(false)}
                       className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-gray-700 transition hover:bg-green-50 hover:text-green-700"
                     >
-                      <span>⌂</span>
+                      <span className="text-lg">⌂</span>
                       হোম পেজ
+                    </Link>
+
+                    <Link
+                      href="/profile"
+                      onClick={() => setMenuOpen(false)}
+                      className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-gray-700 transition hover:bg-green-50 hover:text-green-700"
+                    >
+                      <span className="text-lg">👤</span>
+                      আমার প্রোফাইল
                     </Link>
 
                     <button
@@ -176,8 +196,10 @@ const Userinfo = () => {
                       disabled={signingOut}
                       className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:opacity-60"
                     >
-                      <span>↪</span>
-                      {signingOut ? "লগআউট হচ্ছে..." : "লগআউট"}
+                      <span className="text-lg">↪</span>
+                      {signingOut
+                        ? "লগআউট হচ্ছে..."
+                        : "লগআউট"}
                     </button>
                   </div>
                 </div>
@@ -185,6 +207,7 @@ const Userinfo = () => {
             )}
           </div>
         ) : (
+          /* Sign In / Sign Up */
           <div className="flex items-center gap-2">
             <Link
               href="/signin"
