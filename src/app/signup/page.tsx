@@ -64,6 +64,8 @@ export default function SignupPage() {
     }
   } 
 
+  // google
+
   const handleGoogleSignIn = async () => {
   try {
     const { error } = await authClient.signIn.social({
@@ -79,6 +81,27 @@ export default function SignupPage() {
   } catch {
     toast.error("সমস্যা হয়েছে!", {
       description: "Google দিয়ে আবার চেষ্টা করুন।",
+    });
+  }
+}; 
+
+// github 
+
+const handleGithubSignIn = async () => {
+  try {
+    const { error } = await authClient.signIn.social({
+      provider: "github",
+      callbackURL: "/",
+    });
+
+    if (error) {
+      toast.error("Github Login ব্যর্থ হয়েছে!", {
+        description: error.message || "আবার চেষ্টা করুন।",
+      });
+    }
+  } catch {
+    toast.error("সমস্যা হয়েছে!", {
+      description: "Github দিয়ে আবার চেষ্টা করুন।",
     });
   }
 };
@@ -204,14 +227,16 @@ export default function SignupPage() {
   Google দিয়ে সাইন ইন করুন
 </button>
 
-            <button
-              type="button"
-              disabled
-              className="flex items-center justify-center gap-2 rounded-lg border border-[#d6e4e6] px-3 py-3 text-sm font-semibold opacity-60"
-            >
-              <span className="text-lg">●</span>
-              GitHub দিয়ে সাইন আপ
-            </button>
+<button
+  onClick={handleGithubSignIn}
+  type="button"
+  className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-[#d6e4e6] px-3 py-3 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:border-green-600 hover:bg-green-50 hover:shadow-md active:translate-y-0"
+>
+  <span className="text-lg">●</span>
+  Github দিয়ে সাইন ইন করুন
+</button>
+
+
           </div>
 
           <p className="mt-6 text-center text-sm text-gray-500">
