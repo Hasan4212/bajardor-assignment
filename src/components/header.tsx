@@ -1,4 +1,3 @@
-
 import Userinfo from "./Body/userinfo";
 import Navlinks from "./Navlinks";
 import Link from "next/link";
@@ -17,9 +16,13 @@ const Header = async () => {
       <div className="mx-auto flex max-w-6xl items-center justify-between py-2">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-green-600 text-xl font-bold text-white">
-            ব
-          </div>
+<div className="flex h-9 w-9 items-center justify-center rounded-xl bg-green-600">
+  <img
+    src="/logo-icon.png"
+    alt="বাজার দর লোগো"
+    className="h-6 w-6 object-contain brightness-0 invert opacity-90"
+  />
+</div>
 
           <div>
             <h1 className="text-base font-bold leading-5 text-gray-900">
@@ -32,11 +35,13 @@ const Header = async () => {
           </div>
         </Link>
 
+        {/* User Info */}
         <div className="flex gap-3">
           <Userinfo />
         </div>
       </div>
 
+      {/* Navigation */}
       <div className="mx-auto max-w-6xl py-3">
         <Navlinks />
       </div>
@@ -45,5 +50,3 @@ const Header = async () => {
 };
 
 export default Header;
-
-
